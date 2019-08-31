@@ -159,13 +159,13 @@ module mtm_Alu_serializer(
     else if (state == STOP) begin // what about STATE DIAGRAMS ???
       sout     <= 1'b1;
       state    <= IDLE;
-      data_cnt <= data_cnt + 1;
+      data_cnt <= data_cnt + 1'b1;
     end
     
     //////////////////////////////////////////////////////////////
     
     else if (state == SEND_DATA) begin
-      byte_cnt <= byte_cnt + 1;
+      byte_cnt <= byte_cnt + 1'b1;
       case (data_cnt) 
         2'b00: begin
           case (byte_cnt)
@@ -177,7 +177,6 @@ module mtm_Alu_serializer(
             3'b101: sout <= C_reg[2];
             3'b110: sout <= C_reg[1];
             3'b111: sout <= C_reg[0];
-            default: sout <= 1'b1;
           endcase
         end
         2'b01: begin
@@ -190,7 +189,6 @@ module mtm_Alu_serializer(
             3'b101: sout <= C_reg[13];
             3'b110: sout <= C_reg[14];
             3'b111: sout <= C_reg[15];
-            default: sout <= 1'b1;
           endcase
         end
         2'b10: begin
@@ -203,7 +201,6 @@ module mtm_Alu_serializer(
             3'b101: sout <= C_reg[21];
             3'b110: sout <= C_reg[22];
             3'b111: sout <= C_reg[23];
-            default: sout <= 1'b1;
           endcase
         end
         2'b11: begin
@@ -216,10 +213,8 @@ module mtm_Alu_serializer(
             3'b101: sout <= C_reg[29];
             3'b110: sout <= C_reg[30];
             3'b111: sout <= C_reg[31];
-            default: sout <= 1'b1;
           endcase
         end
-        default: sout <= 1'b0;
       endcase
 
       if (byte_cnt == 3'b111) begin // STATE LOGIC
@@ -240,7 +235,7 @@ module mtm_Alu_serializer(
 
     else if (state == SEND_CTL) begin // REMEMBER ABOUT STOP BITS AND HOLDING THE LINE IDLE 
     // need to add functioniality (state <= TRANSMIT_STOP) ?
-      byte_cnt <= byte_cnt + 1;
+      byte_cnt <= byte_cnt + 1'b1;
       case (byte_cnt)
 	3'b000: sout <= CTL_reg[7]; // MSB first
 	3'b001: sout <= CTL_reg[6];
@@ -250,7 +245,6 @@ module mtm_Alu_serializer(
 	3'b101: sout <= CTL_reg[2];
 	3'b110: sout <= CTL_reg[1];
 	3'b111: sout <= CTL_reg[0];
-	default: sout <= 1'b1;
       endcase
       if (byte_cnt == 3'b111) begin // STATE LOGIC
 	state <= STOP;

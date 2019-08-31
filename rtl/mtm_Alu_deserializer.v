@@ -92,7 +92,8 @@ module mtm_Alu_deserializer(
   wire       ctl_parity;
   wire [7:0] ctl_frame;
 
-  reg  [3:0]  crc_calc = 4'h2; // simulation only
+  //reg  [3:0]  crc_calc = 4'h2; // simulation only
+  reg  [3:0]  crc_calc;
   wire [3:0]  c;
   wire [35:0] d;
 
@@ -132,11 +133,11 @@ module mtm_Alu_deserializer(
         else begin
           state    <= DATA;
           new_data <= 1'b1;
-          byte_cnt <= 1'b0;
+          byte_cnt <= 3'b000;
           if (new_data)
-            data_cnt <= data_cnt + 1;
+            data_cnt <= data_cnt + 1'b1;
           else
-            data_cnt <= 3'b0;
+            data_cnt <= 3'b000;
         end
       end
 
@@ -150,9 +151,8 @@ module mtm_Alu_deserializer(
           3'b101: data[2] <= din;
           3'b110: data[1] <= din;
           3'b111: data[0] <= din;
-          default: data <= 7'b0; 
         endcase
-        byte_cnt <= byte_cnt + 1;
+        byte_cnt <= byte_cnt + 1'b1;
         if (byte_cnt == 3'b111)
           state <= STOP;
         else
@@ -181,9 +181,9 @@ module mtm_Alu_deserializer(
           3'b101: crc[2]    <= din;
           3'b110: crc[1]    <= din;
           3'b111: crc[0]    <= din;
-          default: data <= 7'b0; 
+          default: data <= 8'b0; 
         endcase
-        byte_cnt <= byte_cnt + 1;
+        byte_cnt <= byte_cnt + 1'b1;
         if (byte_cnt == 3'b111) begin
           state <= STOP;
           latch_cmd <= 1'b1;
@@ -315,7 +315,7 @@ module mtm_Alu_deserializer(
     else if (transmit_state == T_START) begin
       t_valid     <= 1'b1;
       t_err       <= 1'b0;
-      t_frame_cnt <= t_frame_cnt + 1;
+      t_frame_cnt <= t_frame_cnt + 1'b1;
 
       if(t_frame_cnt == 3'b011)
         transmit_state <= T_END;
@@ -421,7 +421,7 @@ module mtm_Alu_deserializer(
 
     else if (transmit_state == T_SEND_ERR) begin
       t_err <= 1'b1;
-      A_out <= ctl_frame; // use A output for ctl frame... (resources, no need for another output)
+      A_out <= {24'h000000, ctl_frame}; // use A output for ctl frame... (resources, no need for another output)
 
       if (t_err)
         transmit_state <= T_WAIT;
@@ -444,7 +444,8 @@ module mtm_Alu_deserializer(
 
     assign d[35:20] = {B_0_pre, B_1_pre};
     assign d[19:4]  = {A_0_pre, A_1_pre};
-    assign d[3:0]   = OPMODE_pre;
+    assign d[3]     = 1'b1;
+    assign d[2:0]   = OPMODE_pre;
 
     assign c = crc_calc;
 
