@@ -30,6 +30,11 @@ puts "--------------------------------------------------------------------------
 # TODO: read design files
 # read_hdl 
 
+read_hdl ../../rtl/mtm_Alu_core.v
+read_hdl ../../rtl/mtm_Alu_deserializer.v
+read_hdl ../../rtl/mtm_Alu_serializer.v
+read_hdl ../../rtl/mtm_Alu.v
+
 # suspend
 
 

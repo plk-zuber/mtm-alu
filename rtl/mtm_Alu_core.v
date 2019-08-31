@@ -34,8 +34,10 @@ module mtm_Alu_core(
   output reg   [7:0] C,
 `endif
   input wire   [2:0] opmode,
-  output wire        carry_out,
-  output wire        overflow
+  output wire        carry,
+  output wire        overflow,
+  output wire        zero,
+  output wire        negative
 );
   localparam OPMODE_AND  = 3'b000;
   localparam OPMODE_OR   = 3'b001;
@@ -50,8 +52,13 @@ module mtm_Alu_core(
   wire [8:0] sum_wide;
 `endif
 
+  // Flags according to ARM architecture: C, Z, N, V
+
   assign sum_wide  = {1'b0, A} + {1'b0, B};
-  assign carry_out = sum_wide[`carry_bit];
+  assign carry     = sum_wide[`carry_bit]; // C flag (CARRY or UNSIGNED OVERFLOW)
+  assign zero      = (C == 0); // Z flag (ZERO)
+  assign negative  = C[31]; // N flag (NEGATIVE)
+  assign overflow  = (~(A[31] | B[31]) & C[31]) | (A[31] & B[31] & (~(C[31]))); // V flag (SIGNED OVERFLOW)
 
   always @* begin
     case (opmode)
@@ -72,6 +79,5 @@ module mtm_Alu_core(
       end
     endcase
   end
-
 
 endmodule

@@ -25,7 +25,10 @@ module mtm_Alu (
   wire [31:0] B;
   wire [31:0] C;
   wire [2:0]  opmode;
-  wire        carry_out;
+  wire        carry;
+  wire        overflow;
+  wire        zero;
+  wire        negative;
   wire        t_valid;
 
   mtm_Alu_deserializer u_mtm_Alu_deserializer(
@@ -39,15 +42,27 @@ module mtm_Alu (
   );
 
   mtm_Alu_core u_mtm_Alu_core(
-   .A(A),
-   .B(B),
-   .C(C),
-   .opmode(opmode),
-   .carry_out()
+    .A(A),
+    .B(B),
+    .C(C),
+    .opmode(opmode),
+    .carry(carry),
+    .overflow(overflow),
+    .zero(zero),
+    .negative(negative)
   );
 
-//mtm_Alu_serializer u_mtm_Alu_serializer(
-//);
+  mtm_Alu_serializer u_mtm_Alu_serializer(
+    .clk(clk),
+    .rst(rst_n),
+    .t_valid(t_valid),
+    .C(C),
+    .carry(carry),
+    .overflow(overflow),
+    .zero(zero),
+    .negative(negative),
+    .sout(sout)
+  );
 
 
 endmodule

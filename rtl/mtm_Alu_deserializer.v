@@ -87,7 +87,6 @@ module mtm_Alu_deserializer(
   reg err_flag_op;
 
   reg       t_err;
-  reg [1:0] t_frame_cnt;
   reg [2:0] transmit_state;
 
   wire       ctl_parity;
@@ -97,17 +96,19 @@ module mtm_Alu_deserializer(
   wire [3:0]  c;
   wire [35:0] d;
 
+`ifdef USE_TRANSMITTER 
+  reg [1:0] t_frame_cnt;
+`endif
 
   always @(posedge clk) begin
     if (!rst) begin
       state    <= IDLE;
-      data_err  <= 1'b0;
+      data_err <= 1'b0;
       data     <= 8'b0;
       byte_cnt <= 3'b0;
       data_cnt <= 3'b0;
       new_data <= 1'b0;
       crc_calc <= 4'b0010;
-      OP_out   <= 3'b000;
     end
     else begin
 
@@ -347,7 +348,7 @@ module mtm_Alu_deserializer(
 
     else if (transmit_state == T_END) begin
       t_valid <= 1'b0;
-      state   <= T_WAIT;
+      transmit_state   <= T_WAIT;
     end
 
     else if (transmit_state == T_SEND_ERR) begin
@@ -355,7 +356,7 @@ module mtm_Alu_deserializer(
       A_out <= ctl_frame; // use A output for ctl frame... (resources)
 
       if (t_err)
-        state <= T_WAIT;
+        transmit_state <= T_WAIT;
     end
 
     else begin
@@ -366,7 +367,11 @@ module mtm_Alu_deserializer(
      
 `else 
   always @(posedge clk) begin
-    if (transmit_state == T_WAIT) begin
+    if (!rst) begin
+      OP_out   <= 3'b000;
+      t_valid  <= 1'b0;
+    end
+    else if (transmit_state == T_WAIT) begin
       if (latch_cmd)
         transmit_state <= T_CHECK_ERR;
       else 
@@ -377,7 +382,6 @@ module mtm_Alu_deserializer(
       if (crc_correct && opmode_correct && data_correct) begin
         // start transmitting data
         transmit_state <= T_START;
-        t_frame_cnt    <= 3'b0;
       end
       else begin // transmit error flag
         transmit_state <= T_SEND_ERR; 
@@ -406,13 +410,13 @@ module mtm_Alu_deserializer(
       A_out  <= {A_3_pre, A_2_pre, A_1_pre, A_0_pre};
       B_out  <= {B_3_pre, B_2_pre, B_1_pre, B_0_pre};
 
-      if(t_valid)
-        transmit_state <= T_END;
+      //if(t_valid)
+      transmit_state <= T_END;
     end 
 
     else if (transmit_state == T_END) begin
       t_valid <= 1'b0;
-      state   <= T_WAIT;
+      transmit_state   <= T_WAIT;
     end
 
     else if (transmit_state == T_SEND_ERR) begin
@@ -420,7 +424,7 @@ module mtm_Alu_deserializer(
       A_out <= ctl_frame; // use A output for ctl frame... (resources, no need for another output)
 
       if (t_err)
-        state <= T_WAIT;
+        transmit_state <= T_WAIT;
     end
 
     else begin
