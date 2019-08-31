@@ -30,10 +30,13 @@ puts "--------------------------------------------------------------------------
 # TODO: read design files
 # read_hdl 
 
-read_hdl ../../rtl/mtm_Alu_core.v
-read_hdl ../../rtl/mtm_Alu_deserializer.v
-read_hdl ../../rtl/mtm_Alu_serializer.v
-read_hdl ../../rtl/mtm_Alu.v
+set_db init_hdl_search_path "/home/student/mgarbacz/Pulpit/alu_copy/rtl/"
+
+
+read_hdl mtm_Alu_core.v
+read_hdl mtm_Alu_deserializer.v
+read_hdl mtm_Alu_serializer.v
+read_hdl mtm_Alu.v
 
 # suspend
 
