@@ -7,11 +7,11 @@ vmap work work
 
 vlog $env(XILINX)/data/verilog/src/glbl.v
 
-vlog -work work ../source/mtm_Alu_core.v
-vlog -work work ../source/mtm_Alu_deserializer.v
-vlog -work work ../source/mtm_Alu_serializer.v
+vlog -work work ../rtl/mtm_Alu_core.v
+vlog -work work ../rtl/mtm_Alu_deserializer.v
+vlog -work work ../rtl/mtm_Alu_serializer.v
 
-vlog -work work ../source/mtm_Alu.v
+vlog -work work ../rtl/mtm_Alu.v
 
 vlog -work work mtm_Alu_test_top.v
 vlog -work work mtm_Alu_tb.v
