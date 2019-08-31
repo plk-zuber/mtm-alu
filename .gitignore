@@ -1,0 +1,4 @@
+# Ignore VIM swap files
+*.swp
+# Ignore Modelsim crash dump files
+*.wlf
