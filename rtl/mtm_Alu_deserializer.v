@@ -121,6 +121,7 @@ module mtm_Alu_deserializer(
         end
 
         latch_flag <= 1'b0;
+
         if (din)
           state <= IDLE;
         else
@@ -434,13 +435,14 @@ module mtm_Alu_deserializer(
   end
 `endif
 
-    assign ctl_parity = ^ctl_frame;
+    //assign ctl_parity = ^ctl_frame;
     //assign ctl_frame  = {err_flag_crc, err_flag_op, err_flag_data, ctl_parity};
     assign ctl_frame[7]   = 1'b1;
     assign ctl_frame[6:5] = {2{err_flag_crc}};
     assign ctl_frame[4:3] = {2{err_flag_op}};
     assign ctl_frame[2:1] = {2{err_flag_data}};
-    assign ctl_frame[0]   = ctl_parity;
+    assign ctl_frame[0]   = 1'b0;
+    //assign ctl_frame[0]   = ctl_parity;
 
     assign d[35:20] = {B_0_pre, B_1_pre};
     assign d[19:4]  = {A_0_pre, A_1_pre};

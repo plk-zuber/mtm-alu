@@ -23,14 +23,23 @@ set_load_unit -picofarads
 # TODO: create_clock 
 
 # VIVADO create_clock -add -name clk_50MHz -period 20.00 [get_ports clk]
+
+# what type is clk?
+
+get_object_type clk
+get_object_type sin
+get_object_type sout
+
 create_clock -add -name clk_50m -period 20.00 clk
+get_object_type clk_50m
 
 # Set clock uncertainty to 0.3 for setup analysis
 #     and to 0.1 for hold analysis for the clock
 
 # TODO: set_clock_uncertainty
 
-set_clock_uncertainty -setup 0.3 -hold 0.1 clk
+set_clock_uncertainty -setup 0.3 clk_50m
+set_clock_uncertainty -hold 0.1 clk_50m
 
 #------------------------------------------------------------------------------
 # input constratints
@@ -41,8 +50,8 @@ set_clock_uncertainty -setup 0.3 -hold 0.1 clk
 # TODO: set_driving_cell
 # TODO: set_input_transition
 
-set_driving_cell -lib_cell UCL_INV sin clk rst_n
-set_input_transition 0.2 sin clk rst_n
+set_driving_cell -lib_cell UCL_INV [all_inputs]
+set_input_transition 0.2 [all_inputs]   
 
 
 # Set the input delay to the HALF OF THE CLOCK PERIOD for all inputs, 
@@ -50,14 +59,17 @@ set_input_transition 0.2 sin clk rst_n
 
 # TODO set_input_delay
 
-set_input_delay 10.0 sin rst_n -clock clk 
+# suspend
+
+set_input_delay 10.0 -clock clk_50m [all_inputs]
 
 
 # Limit number of loads for all inputs to one
 
 # TODO: set_max_fanout
 
-set_max_fanout 1
+#suspend
+set_max_fanout 1.0 [all_inputs]
 
 
 #------------------------------------------------------------------------------
@@ -70,8 +82,8 @@ set_max_fanout 1
 # TODO: set_output_delay 
 # TODO: set_load 
 
-set_output_delay 10.0 sout -clock clk
-set_load -pin_load sout 100
+set_output_delay 10.0 -clock clk_50m [all_outputs]
+set_load -pin_load 100 [all_outputs]
 # in FEMTO
 
 

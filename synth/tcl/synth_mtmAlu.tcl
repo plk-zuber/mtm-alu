@@ -122,7 +122,7 @@ check_design -unresolved
 # No unresolved references in design 'mtm_Alu'
 # o empty modules in design 'mtm_Alu'
 
-# suspend
+suspend
 
 #------------------------------------------------------------------------------
 # TODO: put your synthesis commands below.
