@@ -5,6 +5,8 @@
 # NOTE: use "Genus Command Reference", not "Genus Command Reference for Legacy UI"
 # NOTE: All the necessary modifications are marked with TODO: keyword
 
+set resultDir "/student/mgarbacz/Pulpit/mtm-alu/synth/results"
+
 # Verbosity level 0-min, 11-max
 set_db information_level 7 
 
@@ -85,7 +87,7 @@ puts "--------------------------------------------------------------------------
 puts "-- CHECK TIMING CONSTRATINTS ---------------------------------------------------"
 puts "--------------------------------------------------------------------------------"
 check_timing_intent
-# check_timing_intent -verbose > YOUR_REPORT_FILE
+check_timing_intent -verbose > MY_timing_intent.txt
 #
 # TODO: the report should show no errors and no warnings
 # 
@@ -115,6 +117,8 @@ check_timing_intent
 
 # suspend
 
+write_template -simple myTemplate.g
+
 # check for undefined modules
 check_design -unresolved
 # TODO: check if the report contains the following info:
@@ -122,11 +126,16 @@ check_design -unresolved
 # No unresolved references in design 'mtm_Alu'
 # o empty modules in design 'mtm_Alu'
 
-suspend
+# suspend
 
 #------------------------------------------------------------------------------
 # TODO: put your synthesis commands below.
+syn_generic
+syn_map
+syn_opt
 
+report_qor > MyQorSynOpt.rpt
+report_timing > MyTimingSynOpt.rpt
 
 #------------------------------------------------------------------------------
 # TODO: put your report commands below.
@@ -138,5 +147,5 @@ suspend
 
 #------------------------------------------------------------------------------
 # TODO: save the desing for the innovus P&R into a result directory
-#  write_design -innovus -basename $resultDir/mtmAlu_
+write_design -innovus -basename $resultDir/mtmAlu_MG
 

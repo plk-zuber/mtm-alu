@@ -38,8 +38,8 @@ get_object_type clk_50m
 
 # TODO: set_clock_uncertainty
 
-set_clock_uncertainty -setup 0.3 clk_50m
-set_clock_uncertainty -hold 0.1 clk_50m
+set_clock_uncertainty -setup 0.3 [get_clocks clk_50m]
+set_clock_uncertainty -hold 0.1 [get_clocks clk_50m]
 
 #------------------------------------------------------------------------------
 # input constratints
@@ -61,7 +61,7 @@ set_input_transition 0.2 [all_inputs]
 
 # suspend
 
-set_input_delay 10.0 -clock clk_50m [all_inputs]
+set_input_delay -clock clk_50m -max 10.0 [all_inputs]
 
 
 # Limit number of loads for all inputs to one
@@ -82,8 +82,8 @@ set_max_fanout 1.0 [all_inputs]
 # TODO: set_output_delay 
 # TODO: set_load 
 
-set_output_delay 10.0 -clock clk_50m [all_outputs]
-set_load -pin_load 100 [all_outputs]
+set_output_delay -clock clk_50m -max 10.0 [get_ports sout]
+set_load 0.1 [all_outputs]
 # in FEMTO
 
 
