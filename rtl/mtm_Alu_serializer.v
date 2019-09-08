@@ -177,7 +177,6 @@ module mtm_Alu_serializer(
             3'b101: sout <= C_reg[2];
             3'b110: sout <= C_reg[1];
             3'b111: sout <= C_reg[0];
-            default: sout <= 1'b1;
           endcase
         end
         2'b10: begin
@@ -190,7 +189,6 @@ module mtm_Alu_serializer(
             3'b101: sout <= C_reg[10];
             3'b110: sout <= C_reg[9];
             3'b111: sout <= C_reg[8];
-            default: sout <= 1'b1;
           endcase
         end
         2'b01: begin
@@ -203,7 +201,6 @@ module mtm_Alu_serializer(
             3'b101: sout <= C_reg[18];
             3'b110: sout <= C_reg[17];
             3'b111: sout <= C_reg[16];
-            default: sout <= 1'b1;
           endcase
         end
         2'b00: begin
@@ -216,7 +213,6 @@ module mtm_Alu_serializer(
             3'b101: sout <= C_reg[26];
             3'b110: sout <= C_reg[25];
             3'b111: sout <= C_reg[24];
-            default: sout <= 1'b1;
           endcase
         end
         //
