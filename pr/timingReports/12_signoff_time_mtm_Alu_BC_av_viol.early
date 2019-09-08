@@ -1,0 +1,6 @@
+
+reg2reg       Pinsname: u_mtm_Alu_deserializer/t_valid_reg/D, Slack value :0.228, fromClk:   clk_50m, toClk:   clk_50m
+
+==========================
+
+GroupType: Standard, View:BC_av, Hold
