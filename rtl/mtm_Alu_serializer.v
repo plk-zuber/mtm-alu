@@ -159,7 +159,7 @@ module mtm_Alu_serializer(
     else if (state == STOP) begin // what about STATE DIAGRAMS ???
       sout     <= 1'b1;
       state    <= IDLE;
-      data_cnt <= data_cnt + 1'b1;
+      //data_cnt <= data_cnt + 1'b1;
     end
     
     //////////////////////////////////////////////////////////////
