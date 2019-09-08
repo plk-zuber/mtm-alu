@@ -110,7 +110,7 @@ mtm_Alu_tb u_mtm_Alu_tb (
     .clk (clk),
     .rst_n(rst_n),
     .sin (sin),
-    .sout (sout)
+    .sout(sout)
 );
 
 endmodule

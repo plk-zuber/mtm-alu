@@ -19,6 +19,12 @@ add wave -group TESTBENCH_TASK -noupdate /mtm_Alu_test_top/u_mtm_Alu_tb/send_byt
 add wave -group TESTBENCH_TASK -noupdate /mtm_Alu_test_top/u_mtm_Alu_tb/send_byte/opmode
 add wave -group TESTBENCH_TASK -noupdate /mtm_Alu_test_top/u_mtm_Alu_tb/send_byte/crc
 
+add wave -group TESTBENCH_READ -noupdate /mtm_Alu_test_top/u_mtm_Alu_tb/frame
+add wave -group TESTBENCH_READ -noupdate /mtm_Alu_test_top/u_mtm_Alu_tb/i
+add wave -group TESTBENCH_READ -noupdate /mtm_Alu_test_top/u_mtm_Alu_tb/bit_nr
+add wave -group TESTBENCH_READ -noupdate /mtm_Alu_test_top/u_mtm_Alu_tb/C_rx
+add wave -group TESTBENCH_READ -noupdate /mtm_Alu_test_top/u_mtm_Alu_tb/CTL_rx
+
 add wave -group Deserializer -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_deserializer/clk
 add wave -group Deserializer -color {Light Blue} -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_deserializer/state
 add wave -group Deserializer -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_deserializer/byte_cnt
@@ -42,7 +48,7 @@ add wave -group Deserializer -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_deseriali
 add wave -group Deserializer -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_deserializer/err_flag_op
 add wave -group Deserializer -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_deserializer/err_flag_data
 add wave -group Deserializer -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_deserializer/t_err
-add wave -group Deserializer -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_deserializer/t_frame_cnt
+#add wave -group Deserializer -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_deserializer/t_frame_cnt
 add wave -group Deserializer -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_deserializer/transmit_state
 add wave -group Deserializer -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_deserializer/d
 
@@ -51,10 +57,22 @@ add wave -group Deserializer_Output -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_de
 add wave -group Deserializer_Output -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_deserializer/OP_out
 add wave -group Deserializer_Output -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_deserializer/t_valid
 
+add wave -group Serializer -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_serializer/C_reg
+add wave -group Serializer -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_serializer/CTL_reg
+add wave -group Serializer -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_serializer/t_valid_d
+add wave -group Serializer -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_serializer/state
+add wave -group Serializer -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_serializer/data_cnt
+add wave -group Serializer -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_serializer/byte_cnt
+add wave -group Serializer -noupdate /mtm_Alu_test_top/DUT/u_mtm_Alu_serializer/sout
+
 add wave -group ALU -noupdate /mtm_Alu_test_top/DUT/A
 add wave -group ALU -noupdate /mtm_Alu_test_top/DUT/B
 add wave -group ALU -noupdate /mtm_Alu_test_top/DUT/C
 add wave -group ALU -noupdate /mtm_Alu_test_top/DUT/opmode
+add wave -group ALU -noupdate /mtm_Alu_test_top/DUT/carry
+add wave -group ALU -noupdate /mtm_Alu_test_top/DUT/overflow
+add wave -group ALU -noupdate /mtm_Alu_test_top/DUT/zero
+add wave -group ALU -noupdate /mtm_Alu_test_top/DUT/negative
 
 #  reg [7:0] data;
 #  reg [2:0] state;
