@@ -95,17 +95,17 @@ module mtm_Alu_serializer(
   always @(posedge clk) begin
     case (t_valid_d)
       4'b0001: begin // not everything at once...
-	C_reg[7:0] <= C[7:0];
+	C_reg[31:24] <= C[31:24];
 	CTL_reg    <= {1'b0, carry, overflow, zero, negative, crc};
       end
       4'b0010: begin
-	C_reg[15:8] <= C[15:8];
-      end
-      4'b0100: begin
 	C_reg[23:16] <= C[23:16];
       end
+      4'b0100: begin
+	C_reg[15:8] <= C[15:8];
+      end
       4'b1000: begin
-	C_reg[31:24] <= C[31:24];
+	C_reg[7:0] <= C[7:0];
       end
       //default: begin
       //C_reg <= 32'h0; we actually want a latch
@@ -167,7 +167,7 @@ module mtm_Alu_serializer(
     else if (state == SEND_DATA) begin
       byte_cnt <= byte_cnt + 1'b1;
       case (data_cnt) 
-        2'b00: begin
+        2'b11: begin
           case (byte_cnt)
             3'b000: sout <= C_reg[7]; // MSB first
             3'b001: sout <= C_reg[6];
@@ -177,48 +177,54 @@ module mtm_Alu_serializer(
             3'b101: sout <= C_reg[2];
             3'b110: sout <= C_reg[1];
             3'b111: sout <= C_reg[0];
-          endcase
-        end
-        2'b01: begin
-          case (byte_cnt)
-            3'b000: sout <= C_reg[8]; // MSB first
-            3'b001: sout <= C_reg[9];
-            3'b010: sout <= C_reg[10];
-            3'b011: sout <= C_reg[11];
-            3'b100: sout <= C_reg[12];
-            3'b101: sout <= C_reg[13];
-            3'b110: sout <= C_reg[14];
-            3'b111: sout <= C_reg[15];
+            default: sout <= 1'b1;
           endcase
         end
         2'b10: begin
           case (byte_cnt)
-            3'b000: sout <= C_reg[16]; // MSB first
-            3'b001: sout <= C_reg[17];
-            3'b010: sout <= C_reg[18];
-            3'b011: sout <= C_reg[19];
-            3'b100: sout <= C_reg[20];
-            3'b101: sout <= C_reg[21];
-            3'b110: sout <= C_reg[22];
-            3'b111: sout <= C_reg[23];
+            3'b000: sout <= C_reg[15]; // MSB first
+            3'b001: sout <= C_reg[14];
+            3'b010: sout <= C_reg[13];
+            3'b011: sout <= C_reg[12];
+            3'b100: sout <= C_reg[11];
+            3'b101: sout <= C_reg[10];
+            3'b110: sout <= C_reg[9];
+            3'b111: sout <= C_reg[8];
+            default: sout <= 1'b1;
           endcase
         end
-        2'b11: begin
+        2'b01: begin
           case (byte_cnt)
-            3'b000: sout <= C_reg[24]; // MSB first
-            3'b001: sout <= C_reg[25];
-            3'b010: sout <= C_reg[26];
-            3'b011: sout <= C_reg[27];
-            3'b100: sout <= C_reg[28];
-            3'b101: sout <= C_reg[29];
-            3'b110: sout <= C_reg[30];
-            3'b111: sout <= C_reg[31];
+            3'b000: sout <= C_reg[23]; // MSB first
+            3'b001: sout <= C_reg[22];
+            3'b010: sout <= C_reg[21];
+            3'b011: sout <= C_reg[20];
+            3'b100: sout <= C_reg[19];
+            3'b101: sout <= C_reg[18];
+            3'b110: sout <= C_reg[17];
+            3'b111: sout <= C_reg[16];
+            default: sout <= 1'b1;
           endcase
         end
+        2'b00: begin
+          case (byte_cnt)
+            3'b000: sout <= C_reg[31]; // MSB first
+            3'b001: sout <= C_reg[30];
+            3'b010: sout <= C_reg[29];
+            3'b011: sout <= C_reg[28];
+            3'b100: sout <= C_reg[27];
+            3'b101: sout <= C_reg[26];
+            3'b110: sout <= C_reg[25];
+            3'b111: sout <= C_reg[24];
+            default: sout <= 1'b1;
+          endcase
+        end
+        //
       endcase
 
       if (byte_cnt == 3'b111) begin // STATE LOGIC
         state <= STOP;
+        data_cnt <= data_cnt + 1'b1;
 	if (data_cnt == 3'b11) begin
           send_ctl <= 1'b1; 
         end
@@ -248,9 +254,11 @@ module mtm_Alu_serializer(
       endcase
       if (byte_cnt == 3'b111) begin // STATE LOGIC
 	state <= STOP;
+	send_ctl <= 1'b0;
       end
       else begin
 	state <= SEND_CTL;
+	send_ctl <= 1'b1;
       end
     end
    
