@@ -1,0 +1,6 @@
+./README - this file
+./RESULTS link to ../synth/RESULTS (results directory from genus synthesis)
+./clean.sh - script to clean all the innovus run results
+./env.sh - set the environment for innovus run
+./run_pr.sh - use this script to run the place & route. START HERE!
+./tcl - directory with all the necessary scripts to be used and/or modified
