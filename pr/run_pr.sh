@@ -19,10 +19,10 @@ source ./env.sh
 # resumed with "resume" command.
 # The GUI is open with "gui_show", and closed with "gui_hide" commands.
 
-# innovus -stylus -abort_on_error -files ./tcl/run_pr.tcl -log innovus_mtm -overwrite
+innovus -stylus -abort_on_error -files ./tcl/run_pr.tcl -log innovus_mtm -overwrite
 
 
 #------------------------------------------------------------------------------
 # Just start innovus
 
-innovus -stylus -log innovus_mtm -overwrite
+# innovus -stylus -log innovus_mtm -overwrite

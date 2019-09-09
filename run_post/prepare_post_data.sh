@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 # TODO: check the place&route results directory
 RESULTS_DIR=../pr/RESULTS_PR
-DESIGN=mtm_Alu
+DESIGN=mtmAlu_MG
 #------------------------------------------------------------------------------
 # TODO: check the netlist path
 NETLIST=${RESULTS_DIR}/${DESIGN}.noPower.v.gz
@@ -44,7 +44,7 @@ echo -e \
 COMPILED_SDF_FILE = \"$SDF_COMPILED\",\\n\
 LOG_FILE = \"${DESIGN}_sdf.log\", \\n\
 MTM_CONTROL = \"TOOL_CONTROL\",\\n\
-SCOPE = mtm_Alu_test_top.dut \;  \
+SCOPE = mtm_Alu_test_top.DUT \;  \
 > $SDF_COMMAND
 
 
