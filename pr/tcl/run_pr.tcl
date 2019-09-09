@@ -1,6 +1,6 @@
 source tcl/01_initialize_design.tcl
 source tcl/02_connect_power_to_gates.tcl
-source tcl/03_create_floorplan.tcl
+source tcl/03_create_floorplan_2.tcl
 source tcl/04_pre_place_timing_check.tcl
 source tcl/05_place_standard_cells.tcl
 source tcl/06_pre_cts_timing_check.tcl

@@ -1,0 +1,68 @@
+create_floorplan -site CoreSite -core_density_size 1.0 0.7 20u 20u 20u 20u
+
+# create_floorplan
+
+source tcl/00_common_settings.tcl
+
+# TODO Menu: Power -> Power Planning -> Add Ring ...
+#------------------------------------------------------------------------------
+# Generate following rings:
+# - vddd, 5 um width
+# - gndd, 5 um width
+# - vddb, 2 um width
+# - gndb, 2 um width
+# The layers should be ME3 for Top and Bottom and ME4 for Left and Right.
+# The rings should be extended to top and bottom. See the included pictures
+# and use the Advance tab.
+#
+# Note: if incorrect ring was created, use Undo (key: u) function
+# or select the ring elements with the mouse and use Del key.
+#
+# Note: you will have to make vddd and gndd rings first, than
+# vddb and gndb (set the correct value of the offset).
+
+# add_rings
+add_rings -nets {vddd gndd} -type core_rings -follow core -layer {top ME3 bottom ME3 left ME4 right ME4} -width {top 5 bottom 5 left 5 right 5} -spacing {top 0.28 bottom 0.28 left 0.28 right 0.28} -offset {top 1.8 bottom 1.8 left 1.8 right 1.8} -center 0 -extend_corners {lt rt lb rb } -threshold 0 -jog_distance 0 -snap_wire_center_to_grid none
+
+add_rings -nets {vddb gndb} -type core_rings -follow core -layer {top ME3 bottom ME3 left ME4 right ME4} -width {top 2 bottom 2 left 2 right 2} -spacing {top 0.28 bottom 0.28 left 0.28 right 0.28} -offset {top 13 bottom 13 left 13 right 13} -center 0 -extend_corners {lt rt lb rb } -threshold 0 -jog_distance 0 -snap_wire_center_to_grid none
+
+
+# TODO Menu: Power -> Power Planning -> Add Stripe ...
+#------------------------------------------------------------------------------
+# Generate 1 vertical ME5 and 1 horizontal ME4 stripe for vddd and gndd.
+# Width: 5 um, located in the center of the square (use "Relative from core or
+# selected area" setting to locate the stripe).
+
+# add_stripes
+eval_legacy { addStripe -nets {vddd gndd} -layer ME5 -direction horizontal -width 5 -spacing 0.28 -set_to_set_distance 100 -start_from top -start_offset 107 -stop_offset 107 -switch_layer_over_obs false -max_same_layer_jog_length 2 -padcore_ring_top_layer_limit ME6 -padcore_ring_bottom_layer_limit ME1 -block_ring_top_layer_limit ME6 -block_ring_bottom_layer_limit ME1 -use_wire_group 0 -snap_wire_center_to_grid None -skip_via_on_pin {  standardcell } -skip_via_on_wire_shape {  noshape } }
+
+eval_legacy { addStripe -nets {vddd gndd} -layer ME4 -direction vertical -width 5 -spacing 0.28 -set_to_set_distance 100 -start_from left -start_offset 105 -stop_offset 105 -switch_layer_over_obs false -max_same_layer_jog_length 2 -padcore_ring_top_layer_limit ME6 -padcore_ring_bottom_layer_limit ME1 -block_ring_top_layer_limit ME6 -block_ring_bottom_layer_limit ME1 -use_wire_group 0 -snap_wire_center_to_grid None -skip_via_on_pin {  standardcell } -skip_via_on_wire_shape {  noshape } }
+
+
+# TODO: Menu: Route -> Special route ...
+#------------------------------------------------------------------------------
+#	Basic TAB:
+#       	Sroute: select "Follow pins" only
+#		Net(s): vddd gndd
+#		Allow jogging: off
+#	Via generation TAB:
+#		Make via connections to: Stripe
+
+set_db route_special_via_connect_to_shape stripe
+# route_special
+route_special -connect {core_pin} -layer_change_range { ME1(1) ME6(6) } -block_pin_target {nearest_target} -core_pin_target {first_after_row_end} -allow_jogging 0 -crossover_via_layer_range { ME1(1) ME6(6) } -nets { vddb gndb } -allow_layer_change 1 -target_via_layer_range { ME1(1) ME6(6) }
+route_special -connect {core_pin} -layer_change_range { ME1(1) ME6(6) } -block_pin_target {nearest_target} -core_pin_target {first_after_row_end} -allow_jogging 0 -crossover_via_layer_range { ME1(1) ME6(6) } -nets { vddd gndd } -allow_layer_change 1 -target_via_layer_range { ME1(1) ME6(6) }
+
+suspend
+
+# place pins
+#------------------------------------------------------------------------------
+# The input pins (clk, rst_n, sin) should be placed on the left of the block 
+# the output (sout) on the right.
+# All signal pins should be on the ME3 layer.
+#
+# TODO Menu: File -> Save -> I/O File, select "sequence". Copy the file
+# to "$DESIGN.io" and modify it to get required locations and layers
+
+# read_io_file
+read_io_file $DESIGN.io

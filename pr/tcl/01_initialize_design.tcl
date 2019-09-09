@@ -20,7 +20,8 @@ set_db init_ground_nets {gndd gndb}
 # multi-corner) configuration.
 # 
 # TODO: link the synthesis RESULT directory locally with the same name, e.g.:
-# ln -s ../synth/RESULTS .
+#
+# ln -s ../../synth/results .
 
-source ./RESULTS/${DESIGN}.invs_setup.tcl
+source /home/student/mgarbacz/Pulpit/mtm-alu/pr/tcl/results/${DESIGN}.invs_setup.tcl
 

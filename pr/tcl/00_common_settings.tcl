@@ -5,7 +5,7 @@
 #------------------------------------------------------------------------------
 
 # top cell name
-set DESIGN mtm_Alu
+set DESIGN mtmAlu_MG
 
 set_db design_process_node 180
 set_db init_design_uniquify {1}
